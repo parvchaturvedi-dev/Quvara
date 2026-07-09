@@ -56,7 +56,7 @@ export const metadata = {
   authors: [{ name: "Parv Chaturvedi" }, { name: "Raghav Vijayvargiya" }],
   creator: site.name,
   verification: {
-    google: "GDYrJD9ivfvRxhBCUZJAWCMm7z9Psxi4GW78Viv4yWM",
+    google: "zuzYcxg2fKG18pVQfPg7KFbGy_h9MXDDyc0YY24Gli0",
   },
   robots: { index: true, follow: true },
 };
