@@ -55,6 +55,9 @@ export const metadata = {
   alternates: { canonical: "/" },
   authors: [{ name: "Parv Chaturvedi" }, { name: "Raghav Vijayvargiya" }],
   creator: site.name,
+  verification: {
+    google: "GDYrJD9ivfvRxhBCUZJAWCMm7z9Psxi4GW78Viv4yWM",
+  },
   robots: { index: true, follow: true },
 };
 

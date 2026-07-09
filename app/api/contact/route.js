@@ -39,7 +39,10 @@ export async function POST(req) {
 
   const user = process.env.GMAIL_USER;
   const pass = process.env.GMAIL_APP_PASSWORD;
-  const to = process.env.CONTACT_TO || user;
+  const to = (process.env.CONTACT_TO || user || "")
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean);
 
   if (!user || !pass) {
     return Response.json(
@@ -71,7 +74,7 @@ export async function POST(req) {
     </div>`;
 
   try {
-    await transporter.sendMail({
+    const info = await transporter.sendMail({
       from: `"Quvara Website" <${user}>`,
       to,
       replyTo: `${safe(name)} <${email}>`,
@@ -79,6 +82,7 @@ export async function POST(req) {
       text: `Name: ${name}\nEmail: ${email}\nCompany: ${company || "—"}\n\n${message}`,
       html,
     });
+    console.log("contact email — accepted:", info.accepted, "rejected:", info.rejected);
   } catch (err) {
     console.error("contact sendMail failed:", err?.message);
     return Response.json(
