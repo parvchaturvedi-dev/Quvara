@@ -58,6 +58,25 @@ export default function Product() {
         // 3) white fully covers → seamless blend into the next section
         tl.to(overlayRef.current, { autoAlpha: 1, ease: "none", duration: 0.2 }, 0.82);
       });
+
+      // Mobile: a scroll-scrubbed zoom into the card (no pin — reliable on phones)
+      mm.add("(max-width: 1023px)", () => {
+        gsap.set(cardRef.current, { transformOrigin: "50% 38%" });
+        gsap.fromTo(
+          cardRef.current,
+          { scale: 0.9 },
+          {
+            scale: 1.35,
+            ease: "none",
+            scrollTrigger: {
+              trigger: triggerRef.current,
+              start: "top 82%",
+              end: "bottom 18%",
+              scrub: 1,
+            },
+          }
+        );
+      });
     })();
 
     return () => {
