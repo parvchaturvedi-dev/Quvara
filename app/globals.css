@@ -1,0 +1,156 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------
+   Quvara design system — clean corporate, black & white
+   Aesthetic mirrors the InvoiceIQ ERP: white canvas, soft borders,
+   rounded cards, generous whitespace. Monochrome only.
+--------------------------------------------------------------- */
+@theme {
+  /* Fonts (wired to next/font CSS variables in layout.jsx) */
+  --font-display: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
+
+  /* Monochrome palette */
+  --color-ink: #0a0a0a;        /* primary text / black surfaces */
+  --color-paper: #ffffff;      /* page canvas */
+  --color-surface: #f6f6f6;    /* subtle raised surface */
+  --color-mist: #fafafa;       /* faint section background */
+  --color-line: #e7e7e7;       /* hairline borders */
+  --color-line-strong: #d4d4d4;
+  --color-muted: #6b6b6b;      /* secondary text */
+  --color-faint: #a3a3a3;      /* tertiary text / hints */
+
+  /* Radii */
+  --radius-card: 1.25rem;      /* rounded-2xl feel from the ERP */
+
+  /* Motion */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-line);
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* legacy Edge */
+  }
+
+  /* Hide the native scrollbar for a clean, Lenis-driven scroll feel.
+     Scroll progress is shown by the slim top bar instead. */
+  html::-webkit-scrollbar,
+  body::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    display: none;
+  }
+
+  body {
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-body);
+  }
+
+  ::selection {
+    background-color: var(--color-ink);
+    color: var(--color-paper);
+  }
+
+  /* Respect reduced-motion — wow-factor stays, but users can opt out */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+/* Utility: fine-grid / dotted texture used behind hero + sections */
+.bg-grid {
+  background-image:
+    linear-gradient(to right, var(--color-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--color-line) 1px, transparent 1px);
+  background-size: 64px 64px;
+}
+
+/* Tech marquee — icons flow horizontally while each bobs on a staggered
+   sine so the row rolls like a sea wave. Edges fade via a mask. */
+.tm-mask {
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+}
+.tm-track {
+  animation: tm-marquee var(--tm-dur, 40s) linear infinite;
+}
+.tm-chip {
+  animation: tm-bob var(--tm-bob, 2.8s) ease-in-out infinite;
+}
+/* pause only when hovering the icons themselves, not the speed control */
+.tm-mask:hover .tm-track,
+.tm-mask:hover .tm-chip {
+  animation-play-state: paused;
+}
+@keyframes tm-marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@keyframes tm-bob {
+  0%, 100% { transform: translateY(-11px); }
+  50% { transform: translateY(11px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tm-track,
+  .tm-chip {
+    animation: none;
+  }
+}
+
+/* Wave-speed slider — monochrome */
+.tm-range {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 4px;
+  border-radius: 999px;
+  background: var(--color-line-strong);
+  outline: none;
+  cursor: pointer;
+}
+.tm-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--color-ink);
+  border: 2px solid var(--color-paper);
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.25);
+}
+.tm-range::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--color-ink);
+  border: 2px solid var(--color-paper);
+}
+
+/* Circuit process flow — flowing "current" along the traces */
+.circuit-flow {
+  stroke-dasharray: 3 13;
+  animation: circuit-dash 0.85s linear infinite;
+}
+@keyframes circuit-dash {
+  to { stroke-dashoffset: -32; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .circuit-flow {
+    animation: none;
+  }
+}
